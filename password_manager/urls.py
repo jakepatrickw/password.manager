@@ -1,8 +1,10 @@
+from re import template
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 from password_storage import views
 from django.contrib.auth import views as auth_views
+from django.views.generic.base import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,5 +14,6 @@ urlpatterns = [
     path('update/<int:id>/', views.UpdatePassword.as_view(), name='UpdatePassword'),
     path('html/', views.PassLister.as_view(), name='PassLister'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout')
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/profile/', TemplateView.as_view(template_name='home.html'), name='home')
 ]
