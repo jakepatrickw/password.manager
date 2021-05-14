@@ -15,5 +15,6 @@ urlpatterns = [
     path('html/', views.PassLister.as_view(), name='PassLister'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/profile/', TemplateView.as_view(template_name='home.html'), name='home')
+    path('accounts/profile/', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('signup/', views.signup, name='signup'),
 ]

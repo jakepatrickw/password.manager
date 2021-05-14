@@ -1,5 +1,4 @@
 import logging
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
@@ -13,6 +12,30 @@ from .models import UsernamePasswordService
 from .serializer import PassWordSerializer, UpdatePassWordSerializer
 import html
 from .forms import PassWordForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from django.shortcuts import redirect, render
+
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form':form})
+        
+
+
+
+
 
 
 class PassLister(APIView):
@@ -22,10 +45,6 @@ class PassLister(APIView):
     def get(self, request):
         queryset = UsernamePasswordService.objects.all()
         return Response({'passwords':queryset})
-
-# def PassLister(request):
-#     form = PassWordForm
-#     return render(request, 'pass_lister.html', {'form':form})
 
 
 
