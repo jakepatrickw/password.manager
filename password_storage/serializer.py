@@ -5,7 +5,7 @@ from . models import UsernamePasswordService
 class PassWordSerializer(serializers.ModelSerializer):
     class Meta:
         model = UsernamePasswordService
-        fields = ['id', 'service', 'user_name', 'password']
+        fields = ['id', 'service', 'user_name', 'secret']
 
 
 class UpdatePassWordSerializer(serializers.ModelSerializer):

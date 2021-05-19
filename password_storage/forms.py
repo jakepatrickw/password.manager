@@ -7,4 +7,5 @@ class PassWordForm(forms.ModelForm):
 
     class Meta:
         model = UsernamePasswordService
-        fields = ['user', 'user_name', 'service', 'password']
+        fields = ['user', 'user_name', 'service', 'secret']
+        lables ={'user':'User', 'user_name':'User name', 'service':'Service', 'secret':'Password'}

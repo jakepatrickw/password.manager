@@ -31,21 +31,16 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form':form})
-        
+
+def profile(request):
+    passwords = UsernamePasswordService.objects.all()
+    return render(request, 'home.html', {'passwords':passwords})
 
 
-
-
-
-
-class PassLister(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'pass_lister.html'
-
-    def get(self, request):
-        queryset = UsernamePasswordService.objects.all()
-        return Response({'passwords':queryset})
-
+def pass_lister(request, pk):
+    password = UsernamePasswordService.objects.get(pk=pk)
+    form = PassWordForm(instance=password)
+    return render(request, 'pass_lister.html', {'passwordform':form, 'password':password})
 
 
 class ListPassword(ListAPIView):

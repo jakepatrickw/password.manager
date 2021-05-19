@@ -1,12 +1,10 @@
-<html>
-    <body>
-    <h1>Detailed View: </h1>
-        {% for password in passwords %}
-        <li>{{ password.user_name }}</li>
-        <li>{{ password.user }}</li>
-        <li>{{ password.service }}</li>
-        <li>{{ password.pass_word }}</li>
-        {% endfor %}
-    </body>
-</html>
+<h1>{{ note }}</h1> -->
 
+<form action="{% url 'PassLister' user.id %}" method="POST">
+    {% csrf_token %}
+    {{ passwordform.as_p }}
+</form>
+
+<!-- {% for password in passwords%}
+{{ password.service }}
+{% endfor %} -->
