@@ -1,5 +1,4 @@
 import logging
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
@@ -13,20 +12,35 @@ from .models import UsernamePasswordService
 from .serializer import PassWordSerializer, UpdatePassWordSerializer
 import html
 from .forms import PassWordForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from django.shortcuts import redirect, render
 
 
-class PassLister(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'pass_lister.html'
 
-    def get(self, request):
-        queryset = UsernamePasswordService.objects.all()
-        return Response({'passwords':queryset})
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form':form})
 
-# def PassLister(request):
-#     form = PassWordForm
-#     return render(request, 'pass_lister.html', {'form':form})
+def profile(request):
+    passwords = UsernamePasswordService.objects.all()
+    return render(request, 'home.html', {'passwords':passwords})
 
+
+def pass_lister(request, pk):
+    password = UsernamePasswordService.objects.get(pk=pk)
+    form = PassWordForm(instance=password)
+    return render(request, 'pass_lister.html', {'passwordform':form, 'password':password})
 
 
 class ListPassword(ListAPIView):

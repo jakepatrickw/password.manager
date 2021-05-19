@@ -1,1 +1,15 @@
-<h1>logged in fool</h1>
+{% if user.is_authenticated %}
+<p1>Hi {{ user.username }}</p1>
+<br>
+<p2>below is a listing of the servcies we have on file</p2>
+<br>
+{% for password in passwords %}
+{{ password.user }}
+{% endfor %} 
+<br>
+<a href="{% url 'logout' %}">Log out</a>
+
+{% else %}
+<p>you are not logged in</p>
+<a href="{% url 'login' %}">Log in</a>
+{% endif %}
